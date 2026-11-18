@@ -27,6 +27,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->brandName('Mypinjam')
             // Tidak menggunakan halaman login bawaan Filament
             ->colors([
                 'primary' => Color::Amber,

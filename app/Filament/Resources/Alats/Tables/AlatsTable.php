@@ -8,6 +8,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use Filament\Actions\ViewAction;
 
 class AlatsTable
 {
@@ -53,6 +54,8 @@ class AlatsTable
                     ->dateTime('d M Y')
                     ->sortable(),
             ])
+            
+
             ->filters([
                 SelectFilter::make('category')
                     ->label('Kategori')
@@ -65,7 +68,12 @@ class AlatsTable
                     ->placeholder('Semua'),
             ])
             ->recordActions([
-                EditAction::make(),
+                ViewAction::make()
+                    ->label('Detail')
+                    ->icon('heroicon-o-eye'),
+
+                EditAction::make()
+                    ->visible(fn (): bool => auth()->user()?->isAdmin() ?? false),
             ])
             ->defaultSort('created_at', 'desc');
     }

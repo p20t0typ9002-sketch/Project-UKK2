@@ -34,6 +34,12 @@ class AlatResource extends Resource
         return auth()->user()?->isAdmin() || auth()->user()?->isPetugas();
     }
 
+    public static function canView($record): bool
+    {
+        return auth()->user()?->isAdmin()
+            || auth()->user()?->isPetugas();
+    }
+
     public static function canCreate(): bool
     {
         return auth()->user()?->isAdmin() ?? false;
@@ -41,13 +47,12 @@ class AlatResource extends Resource
 
     public static function canEdit(Model $record): bool
     {
-        return auth()->user()?->isAdmin() || auth()->user()?->isPetugas();
+        return auth()->user()?->isAdmin() ?? false;
     }
 
     public static function canDelete(Model $record): bool
     {
-        return (auth()->user()?->isAdmin() ?? false)
-            && ! $record->detailPeminjamans()->exists();
+        return auth()->user()?->isAdmin() ?? false;
     }
 
     public static function form(Schema $schema): Schema
@@ -65,6 +70,7 @@ class AlatResource extends Resource
         return [
             'index' => ListAlats::route('/'),
             'create' => CreateAlat::route('/create'),
+            'view' => Pages\ViewAlat::route('/{record}'),
             'edit' => EditAlat::route('/{record}/edit'),
         ];
     }
